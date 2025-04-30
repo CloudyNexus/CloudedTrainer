@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "name": "CS:GO Trainer",
+    "game_name": "Counter-Strike: Global Offensive",
+    "description": "Trainer for Counter-Strike: Global Offensive",
+    "process_name": "csgo_linux64",
+    "version": "1.0.0",
+    "created_at": "2025-04-30T21:45:46.034146",
+    "updated_at": "2025-04-30T21:45:46.034154"
+  },
+  {
+    "id": 2,
+    "name": "Dota 2 Trainer",
+    "game_name": "Dota 2",
+    "description": "Trainer for Dota 2",
+    "process_name": "dota2",
+    "version": "1.0.0",
+    "created_at": "2025-04-30T21:45:46.034159",
+    "updated_at": "2025-04-30T21:45:46.034161"
+  },
+  {
+    "id": 3,
+    "name": "Minecraft Trainer",
+    "game_name": "Minecraft",
+    "description": "Trainer for Minecraft (Java Edition)",
+    "process_name": "java",
+    "version": "1.0.0",
+    "created_at": "2025-04-30T21:45:46.034164",
+    "updated_at": "2025-04-30T21:45:46.034166"
+  },
+  {
+    "id": 4,
+    "name": "TF2 Trainer",
+    "game_name": "Team Fortress 2",
+    "description": "Trainer for Team Fortress 2",
+    "process_name": "hl2_linux",
+    "version": "1.0.0",
+    "created_at": "2025-04-30T21:45:46.034169",
+    "updated_at": "2025-04-30T21:45:46.034171"
+  },
+  {
+    "id": 5,
+    "name": "Terraria Trainer",
+    "game_name": "Terraria",
+    "description": "Trainer for Terraria",
+    "process_name": "Terraria.bin.x86_64",
+    "version": "1.0.0",
+    "created_at": "2025-04-30T21:45:46.034173",
+    "updated_at": "2025-04-30T21:45:46.034175"
+  }
+]

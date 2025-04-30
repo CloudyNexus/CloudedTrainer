@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CloudedTrainer{% endblock %} - {{ app_name }}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="app-wrapper">
+        <!-- Loading Spinner -->
+        <div id="loading-spinner">
+            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        
+        <!-- Toast Container -->
+        <div id="toast-container"></div>
+        
+        <!-- Main Layout -->
+        <div class="d-flex">
+            <!-- Sidebar -->
+            <div class="sidebar bg-body-tertiary">
+                <div class="text-center mb-4">
+                    <h3 class="mb-0">CloudedTrainer</h3>
+                    <p class="text-muted small mb-0">v{{ version }}</p>
+                </div>
+                
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' else '' }}">
+                            <i class="fas fa-gamepad"></i> Games
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('settings') }}" class="{{ 'active' if request.endpoint == 'settings' else '' }}">
+                            <i class="fas fa-cogs"></i> Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('about') }}" class="{{ 'active' if request.endpoint == 'about' else '' }}">
+                            <i class="fas fa-info-circle"></i> About
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="mt-auto p-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="dark-mode-toggle" checked>
+                        <label class="form-check-label" for="dark-mode-toggle">Dark Mode</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="main-with-sidebar flex-grow-1">
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <!-- Page Content -->
+                <div class="main-content">
+                    {% block content %}
+                        {% if error %}
+                            <div class="alert alert-danger">
+                                {{ error }}
+                            </div>
+                        {% endif %}
+                    {% endblock %}
+                </div>
+                
+                <!-- Footer -->
+                <footer class="mt-5 pt-4 pb-2 text-muted text-center small">
+                    <p>CloudedTrainer &copy; {{ now().year }} | Game Trainer for Linux</p>
+                    <p class="small">
+                        <a href="https://github.com/CloudyNexus/CloudedTrainer" target="_blank" class="text-muted">
+                            <i class="fab fa-github me-1"></i>GitHub
+                        </a>
+                        <span class="mx-2">|</span>
+                        <a href="#" class="text-muted">Privacy Policy</a>
+                        <span class="mx-2">|</span>
+                        <a href="#" class="text-muted">Terms of Service</a>
+                    </p>
+                </footer>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Main JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

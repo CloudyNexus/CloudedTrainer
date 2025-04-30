@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}Games Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Installed Games</h1>
+        
+        <div class="d-flex">
+            <div class="input-group me-2">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                <input type="text" class="form-control" id="game-search" placeholder="Search games..." onkeyup="filterGames()">
+            </div>
+            
+            <button class="btn btn-primary" id="refresh-games-btn">
+                <i class="fas fa-sync-alt me-1"></i> Refresh
+            </button>
+        </div>
+    </div>
+    
+    <!-- Game statistics cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary-subtle text-primary h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="rounded-circle p-3 bg-primary bg-opacity-25 me-3">
+                        <i class="fas fa-gamepad fs-2"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-0">{{ games|length }}</h5>
+                        <p class="card-text">Installed Games</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-success-subtle text-success h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="rounded-circle p-3 bg-success bg-opacity-25 me-3">
+                        <i class="fas fa-play fs-2"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-0">{{ games|selectattr('is_running', 'eq', true)|list|length }}</h5>
+                        <p class="card-text">Running Games</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-info-subtle text-info h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="rounded-circle p-3 bg-info bg-opacity-25 me-3">
+                        <i class="fas fa-wrench fs-2"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-0">{{ games|selectattr('has_trainer', 'eq', true)|list|length }}</h5>
+                        <p class="card-text">Available Trainers</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-warning-subtle text-warning h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="rounded-circle p-3 bg-warning bg-opacity-25 me-3">
+                        <i class="fas fa-cloud-download-alt fs-2"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-0">5</h5>
+                        <p class="card-text">Updates Available</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Games grid -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+        {% for game in games %}
+        <div class="col">
+            <div class="card game-card" data-game-name="{{ game.name }}">
+                {% if game.has_trainer %}
+                <div class="position-absolute top-0 start-0 m-2">
+                    <span class="badge bg-success" data-bs-toggle="tooltip" title="Trainer Available">
+                        <i class="fas fa-check"></i>
+                    </span>
+                </div>
+                {% endif %}
+                
+                <div class="position-absolute top-0 end-0 m-2">
+                    <span class="badge {% if game.is_running %}bg-success{% else %}bg-secondary{% endif %}">
+                        {% if game.is_running %}Running{% else %}Not Running{% endif %}
+                    </span>
+                </div>
+                
+                <div class="card-img-top d-flex align-items-center justify-content-center bg-dark">
+                    <i class="fas fa-gamepad game-icon text-muted"></i>
+                </div>
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ game.name }}</h5>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge {% if game.platform == 'Steam' %}bg-info{% else %}bg-secondary{% endif %}">
+                            {{ game.platform }}
+                        </span>
+                        
+                        {% if game.has_trainer and game.is_running %}
+                        <button class="btn btn-sm btn-success" onclick="window.location.href='/game/{{ game.name }}'">
+                            <i class="fas fa-wrench me-1"></i> Open Trainer
+                        </button>
+                        {% elif game.has_trainer %}
+                        <button class="btn btn-sm btn-secondary">
+                            <i class="fas fa-wrench me-1"></i> Open Trainer
+                        </button>
+                        {% else %}
+                        <span class="badge bg-warning">No Trainer</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- No games found message -->
+    <div id="no-games-found" class="text-center py-5 d-none">
+        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+        <h4>No games found</h4>
+        <p>Try a different search term or refresh the game list.</p>
+    </div>
+    
+    <!-- Empty state when no games are installed -->
+    {% if not games %}
+    <div class="text-center py-5">
+        <i class="fas fa-gamepad fa-3x text-muted mb-3"></i>
+        <h4>No games detected</h4>
+        <p>We couldn't detect any games installed on your system.</p>
+        <button class="btn btn-primary" id="refresh-games-btn">
+            <i class="fas fa-sync-alt me-1"></i> Refresh Game List
+        </button>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

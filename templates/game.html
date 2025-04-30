@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+
+{% block title %}{{ game.name }} Trainer{% endblock %}
+
+{% block extra_css %}
+<style>
+    .game-header {
+        background-color: rgba(var(--bs-dark-rgb), 0.8);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Game Header -->
+    <div class="game-header d-flex align-items-center">
+        <div class="game-icon me-4 p-3 rounded bg-body-tertiary">
+            <i class="fas fa-gamepad fa-3x"></i>
+        </div>
+        
+        <div>
+            <h1 class="h3 mb-1">{{ game.name }}</h1>
+            <p class="text-muted mb-2">{{ trainer.description }}</p>
+            
+            <div class="d-flex align-items-center">
+                <span class="badge bg-secondary me-2">{{ game.platform }}</span>
+                
+                <div id="game-status" data-game-name="{{ game.name }}" data-was-running="{{ 'true' if is_running else 'false' }}">
+                    {% if is_running %}
+                    <span class="badge bg-success">Running</span>
+                    {% else %}
+                    <span class="badge bg-danger">Not Running</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="ms-auto">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary me-2">
+                <i class="fas fa-arrow-left me-1"></i> Back
+            </a>
+            
+            <button class="btn btn-primary" {% if not is_running %}onclick="launchGame('{{ game.name }}', '{{ game.install_path }}')"{% else %}disabled{% endif %}>
+                <i class="fas fa-play me-1"></i> {{ 'Running' if is_running else 'Launch Game' }}
+            </button>
+        </div>
+    </div>
+    
+    <!-- Trainer content -->
+    <div class="row">
+        <!-- Left column: Available cheats -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Available Cheats</h5>
+                    
+                    <div>
+                        <button class="btn btn-sm btn-outline-primary me-2" onclick="scanMemory('{{ game.name }}')" {% if not is_running %}disabled{% endif %}>
+                            <i class="fas fa-search me-1"></i> Memory Scanner
+                        </button>
+                        
+                        <button class="btn btn-sm btn-outline-danger" {% if not is_running %}disabled{% endif %}>
+                            <i class="fas fa-power-off me-1"></i> Disable All
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    {% if cheats %}
+                    <div class="row">
+                        {% for cheat in cheats %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card cheat-card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="mb-0">{{ cheat.name }}</h6>
+                                        
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input cheat-toggle" type="checkbox" 
+                                                   id="cheat-{{ cheat.id }}" 
+                                                   data-game-name="{{ game.name }}" 
+                                                   data-cheat-id="{{ cheat.id }}"
+                                                   {% if not is_running %}disabled{% endif %}>
+                                        </div>
+                                    </div>
+                                    
+                                    <p class="card-text small text-muted mb-0">{{ cheat.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-exclamation-circle fa-3x text-muted mb-3"></i>
+                        <h5>No cheats available</h5>
+                        <p class="text-muted">There are no cheats available for this game yet.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right column: Game info and stats -->
+        <div class="col-lg-4">
+            <!-- Game Info Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Game Information</h5>
+                </div>
+                
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Platform</th>
+                                <td>{{ game.platform }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Installation Path</th>
+                                <td><span class="text-truncate d-block" style="max-width: 200px;">{{ game.install_path }}</span></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Process Name</th>
+                                <td>{{ trainer.process_name }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Trainer Version</th>
+                                <td>{{ trainer.version }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Trainer Logs Card -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Trainer Logs</h5>
+                    <button class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-trash me-1"></i> Clear
+                    </button>
+                </div>
+                
+                <div class="card-body">
+                    <div class="bg-body-tertiary p-2 rounded" style="height: 200px; overflow-y: auto; font-family: monospace; font-size: 12px;">
+                        {% if is_running %}
+                        <div class="log-entry text-success">
+                            [{{ now().strftime('%H:%M:%S') }}] Game process detected: {{ trainer.process_name }}
+                        </div>
+                        <div class="log-entry text-muted">
+                            [{{ now().strftime('%H:%M:%S') }}] Trainer initialized successfully
+                        </div>
+                        <div class="log-entry text-muted">
+                            [{{ now().strftime('%H:%M:%S') }}] Ready to apply cheats
+                        </div>
+                        {% else %}
+                        <div class="log-entry text-warning">
+                            [{{ now().strftime('%H:%M:%S') }}] Game is not running
+                        </div>
+                        <div class="log-entry text-muted">
+                            [{{ now().strftime('%H:%M:%S') }}] Launch the game to enable trainer features
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Memory Scanner Modal -->
+<div class="modal fade" id="scanModal" tabindex="-1" aria-labelledby="scanModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="scanModalLabel">Memory Scanner</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-game-info">
+                    <div class="modal-game-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <div class="modal-game-details">
+                        <h5 class="mb-0">{{ game.name }}</h5>
+                        <p class="mb-0 text-muted small">Process: {{ trainer.process_name }}</p>
+                    </div>
+                </div>
+                
+                <form id="scan-form">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="value-type" class="form-label">Value Type</label>
+                            <select class="form-select" id="value-type">
+                                <option value="int">Integer</option>
+                                <option value="float">Float</option>
+                                <option value="double">Double</option>
+                                <option value="string">String</option>
+                                <option value="bytes">Bytes</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="scan-type" class="form-label">Scan Type</label>
+                            <select class="form-select" id="scan-type">
+                                <option value="exact">Exact Value</option>
+                                <option value="greater">Greater Than</option>
+                                <option value="less">Less Than</option>
+                                <option value="range">Value Range</option>
+                                <option value="unknown">Unknown Value</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="scan-value" class="form-label">Value</label>
+                            <input type="text" class="form-control" id="scan-value" placeholder="Enter value">
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search me-1"></i> Scan Memory
+                        </button>
+                        
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+                
+                <hr>
+                
+                <div id="scan-results" class="mt-3">
+                    <div class="text-center py-3">
+                        <p class="text-muted">Scan results will appear here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/trainer.js') }}"></script>
+{% endblock %}

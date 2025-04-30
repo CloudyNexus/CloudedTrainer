@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="h3">Settings</h1>
+            <p class="text-muted">Configure CloudedTrainer to fit your preferences</p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- General Settings Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">General Settings</h5>
+                </div>
+                
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="setting-auto-refresh">
+                            <label class="form-check-label" for="setting-auto-refresh">
+                                Automatically refresh game list on startup
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="setting-start-with-system">
+                            <label class="form-check-label" for="setting-start-with-system">
+                                Start CloudedTrainer with system
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="setting-check-updates">
+                            <label class="form-check-label" for="setting-check-updates">
+                                Check for updates automatically
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="setting-scan-frequency" class="form-label">Game scan frequency</label>
+                        <select class="form-select" id="setting-scan-frequency">
+                            <option value="10">Every 10 seconds</option>
+                            <option value="30" selected>Every 30 seconds</option>
+                            <option value="60">Every minute</option>
+                            <option value="300">Every 5 minutes</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="setting-theme" class="form-label">Application Theme</label>
+                        <select class="form-select" id="setting-theme">
+                            <option value="system">System Default</option>
+                            <option value="dark" selected>Dark Theme</option>
+                            <option value="light">Light Theme</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="saveTrainerSettings()">
+                        <i class="fas fa-save me-1"></i> Save Settings
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Advanced Settings Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Advanced Settings</h5>
+                </div>
+                
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="setting-memory-scan-method" class="form-label">Memory Scanning Method</label>
+                        <select class="form-select" id="setting-memory-scan-method">
+                            <option value="ptrace" selected>ptrace (Default)</option>
+                            <option value="memfd">memfd_create</option>
+                            <option value="process_vm">process_vm_readv</option>
+                        </select>
+                        <div class="form-text">Method used to read memory from games. Change only if you experience issues.</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="setting-log-level" class="form-label">Log Level</label>
+                        <select class="form-select" id="setting-log-level">
+                            <option value="debug">Debug</option>
+                            <option value="info" selected>Info</option>
+                            <option value="warning">Warning</option>
+                            <option value="error">Error</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="setting-log-path" class="form-label">Log File Path</label>
+                        <input type="text" class="form-control" id="setting-log-path" value="~/.cloudedtrainer/logs/">
+                    </div>
+                    
+                    <button class="btn btn-danger me-2">
+                        <i class="fas fa-trash me-1"></i> Clear All Logs
+                    </button>
+                    
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-file-alt me-1"></i> View Logs
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Game Library Paths Card -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Game Library Paths</h5>
+                    <button class="btn btn-sm btn-primary">
+                        <i class="fas fa-plus me-1"></i> Add Path
+                    </button>
+                </div>
+                
+                <div class="card-body">
+                    <div class="list-group">
+                        <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Steam</h6>
+                                <p class="mb-0 small text-muted">~/.steam/steam/steamapps</p>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-outline-secondary me-1">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Lutris</h6>
+                                <p class="mb-0 small text-muted">~/.local/share/lutris/games</p>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-outline-secondary me-1">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Custom Path</h6>
+                                <p class="mb-0 small text-muted">~/Games</p>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-outline-secondary me-1">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <!-- About Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">About CloudedTrainer</h5>
+                </div>
+                
+                <div class="card-body text-center">
+                    <i class="fas fa-gamepad fa-3x text-primary mb-3"></i>
+                    <h5>CloudedTrainer v{{ version }}</h5>
+                    <p class="text-muted">An open source Linux-based game trainer for Ubuntu</p>
+                    
+                    <button class="btn btn-outline-success btn-sm mb-3">
+                        <i class="fas fa-cloud-download-alt me-1"></i> Check for Updates
+                    </button>
+                    
+                    <div class="d-grid gap-2">
+                        <a href="https://github.com/CloudyNexus/CloudedTrainer" target="_blank" class="btn btn-outline-secondary btn-sm">
+                            <i class="fab fa-github me-1"></i> GitHub Repository
+                        </a>
+                        <a href="https://github.com/CloudyNexus/CloudedTrainer/issues" target="_blank" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-bug me-1"></i> Report a Bug
+                        </a>
+                        <a href="#" target="_blank" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-star me-1"></i> Support the Project
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- System Information Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">System Information</h5>
+                </div>
+                
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Operating System</th>
+                                <td>Ubuntu 22.04 LTS</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Kernel Version</th>
+                                <td>5.15.0-56-generic</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">CPU</th>
+                                <td>Intel Core i7-10700K</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">RAM</th>
+                                <td>16GB</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">GPU</th>
+                                <td>NVIDIA GeForce RTX 3070</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Python Version</th>
+                                <td>3.10.6</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="d-grid">
+                        <button class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-sync-alt me-1"></i> Refresh System Info
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/trainer.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load saved settings
+    loadTrainerSettings();
+});
+</script>
+{% endblock %}

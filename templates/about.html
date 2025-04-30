@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="h3">About CloudedTrainer</h1>
+            <p class="text-muted">Advanced game trainer for Linux with anti-cheat bypassing</p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- About Card -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-gamepad fa-4x text-primary mb-3"></i>
+                        <h3>CloudedTrainer</h3>
+                        <p class="lead">Version {{ version }}</p>
+                    </div>
+                    
+                    <p>CloudedTrainer is an advanced game trainer for Ubuntu and other Linux distributions. It's designed to provide a powerful, user-friendly alternative to Windows-based trainers, incorporating advanced anti-cheat bypassing techniques specifically for the Linux gaming community.</p>
+                    
+                    <h5 class="mt-4">Key Features</h5>
+                    <ul>
+                        <li>Advanced anti-cheat bypassing techniques customized for each game</li>
+                        <li>Auto-detection of installed games on Ubuntu</li>
+                        <li>Support for Steam and other popular game platforms</li>
+                        <li>Custom item/enchantment creation for Minecraft Java</li>
+                        <li>Offline-first architecture with local storage</li>
+                        <li>Modern, sleek user interface</li>
+                        <li>Advanced memory reading and manipulation with signature scanning</li>
+                        <li>Game process monitoring and attachment</li>
+                        <li>Working trainers for popular games including Minecraft Dungeons</li>
+                        <li>Browse available trainers even for non-installed games</li>
+                    </ul>
+                    
+                    <h5 class="mt-4">Technologies Used</h5>
+                    <p>CloudedTrainer is built using Python with Flask for the web interface, and leverages ptrace, process_vm_readv, and other Linux system calls for memory manipulation. The modern UI is powered by Bootstrap and custom JavaScript.</p>
+                </div>
+            </div>
+            
+            <!-- License Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">License</h5>
+                </div>
+                
+                <div class="card-body">
+                    <p>CloudedTrainer is licensed under a custom license by Cloudy City.</p>
+                    
+                    <p>This license includes:</p>
+                    <ul>
+                        <li>Non-commercial use only</li>
+                        <li>Free to share with attribution</li>
+                        <li>Modifications and derivative works allowed under same license</li>
+                        <li>Local storage of user data for offline use</li>
+                        <li>No warranty or liability</li>
+                    </ul>
+                    
+                    <p>The license prohibits:</p>
+                    <ul>
+                        <li>Commercial or for-profit use without permission</li>
+                        <li>Use in AI training or operation</li>
+                        <li>Hosting on platforms requiring payment for access</li>
+                        <li>Re-licensing under different terms</li>
+                    </ul>
+                    
+                    <p>For the full license text, please visit the <a href="https://github.com/CloudyNexus/CloudedTrainer" target="_blank">GitHub repository</a>.</p>
+                </div>
+            </div>
+            
+            <!-- Disclaimers Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Disclaimers</h5>
+                </div>
+                
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Important Notice</h6>
+                        <p class="mb-0">This software is provided for educational and single-player gaming purposes only. Using trainers in multiplayer games may violate the terms of service of the game and could result in a ban. The developers of CloudedTrainer are not responsible for any misuse of this software.</p>
+                    </div>
+                    
+                    <p>CloudedTrainer is not affiliated with any game developers or publishers. All game names, trademarks, and copyrights belong to their respective owners.</p>
+                    
+                    <p>The software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <!-- Developers Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Development Team</h5>
+                </div>
+                
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                            <i class="fas fa-code text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">Cloudy City</h6>
+                            <p class="mb-0 small text-muted">Lead Development</p>
+                        </div>
+                    </div>
+                    
+                    <p class="small">CloudedTrainer is developed by Cloudy City, a passionate Linux gaming enthusiast who wanted to create a powerful and effective game trainer specifically designed for Linux users.</p>
+                    
+                    <hr>
+                    
+                    <h6 class="mb-3">Contributors</h6>
+                    <p class="small">This project grows with the support and feedback from the community. We'd like to thank everyone who has contributed code, reported bugs, or suggested features.</p>
+                    
+                    <div class="d-grid gap-2">
+                        <a href="https://github.com/CloudyNexus/CloudedTrainer" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="fab fa-github me-1"></i> View Project on GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Get Involved</h5>
+                </div>
+                
+                <div class="card-body">
+                    <p>There are many ways to get involved with CloudedTrainer:</p>
+                    
+                    <div class="list-group mb-3">
+                        <a href="https://github.com/CloudyNexus/CloudedTrainer" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <i class="fas fa-code me-3 text-primary"></i>
+                            <div>
+                                <h6 class="mb-0">Contribute Code</h6>
+                                <p class="mb-0 small text-muted">Submit pull requests on GitHub</p>
+                            </div>
+                        </a>
+                        
+                        <a href="https://github.com/CloudyNexus/CloudedTrainer/issues" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <i class="fas fa-bug me-3 text-danger"></i>
+                            <div>
+                                <h6 class="mb-0">Report Bugs</h6>
+                                <p class="mb-0 small text-muted">Help us identify and fix issues</p>
+                            </div>
+                        </a>
+                        
+                        <a href="https://github.com/CloudyNexus/CloudedTrainer/discussions" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <i class="fas fa-lightbulb me-3 text-warning"></i>
+                            <div>
+                                <h6 class="mb-0">Suggest Features</h6>
+                                <p class="mb-0 small text-muted">Share your ideas for improvements</p>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <i class="fas fa-gamepad me-3 text-success"></i>
+                            <div>
+                                <h6 class="mb-0">Report Game Compatibility</h6>
+                                <p class="mb-0 small text-muted">Help us improve game support</p>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <p class="text-center mb-0">
+                        <a href="https://github.com/CloudyNexus" target="_blank" class="btn btn-outline-secondary me-2">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" target="_blank" class="btn btn-outline-secondary me-2">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="#" target="_blank" class="btn btn-outline-secondary">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Roadmap Preview Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Future Plans</h5>
+                </div>
+                
+                <div class="card-body">
+                    <p class="mb-3">CloudedTrainer is continuously evolving. Here's what we're planning for future releases:</p>
+                    
+                    <div class="mb-3">
+                        <h6><i class="fas fa-check-circle text-success me-2"></i>Current Version</h6>
+                        <ul class="small">
+                            <li>Advanced anti-cheat bypassing</li>
+                            <li>Support for popular games</li>
+                            <li>Offline-first data storage</li>
+                            <li>Memory manipulation capabilities</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6><i class="fas fa-hourglass-half text-warning me-2"></i>Next Release</h6>
+                        <ul class="small">
+                            <li>Minecraft Dungeons support</li>
+                            <li>Enhanced Minecraft Java cheats</li>
+                            <li>Custom enchantment/item creation</li>
+                            <li>Available trainers for non-installed games</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h6><i class="fas fa-road text-muted me-2"></i>Future Vision</h6>
+                        <ul class="small">
+                            <li>Support for 50+ games</li>
+                            <li>Real-time memory scanning</li>
+                            <li>Game-specific overlay UI</li>
+                            <li>Protection against future anti-cheat updates</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="d-grid mt-3">
+                        <a href="#" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-tasks me-1"></i> View Full Roadmap
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
