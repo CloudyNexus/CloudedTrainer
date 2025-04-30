@@ -2,7 +2,7 @@
 
 An open-source Linux-based WeMod alternative for Ubuntu that auto-detects games and provides working trainers with a modern GUI.
 
-![CloudedTrainer](https://via.placeholder.com/800x400?text=CloudedTrainer)
+![CloudedTrainer](https://github.com/user-attachments/assets/c08aba1b-25c7-43bd-a5d4-bf081d745b10)
 
 ## Overview
 
